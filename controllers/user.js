@@ -2,6 +2,19 @@ import passport from '../passport';
 import User from '../models/user';
 
 // eslint-disable-next-line no-unused-vars
+export function showLoginForm(req, res, next) {
+  res.send('login');
+}
+
+export const createSession = passport.authenticate(
+  'local',
+  {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+  },
+);
+
+// eslint-disable-next-line no-unused-vars
 export function showRegistrationForm(req, res, next) {
   res.send('register');
 }
@@ -21,14 +34,12 @@ export function createUser(req, res, next) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export function showLoginForm(req, res, next) {
-  res.send('login');
+export function getProfile(req, res, next) {
+  res.send({ user: req.user.toJSON() });
 }
 
-export const createSession = passport.authenticate(
-  'local',
-  {
-    successRedirect: '/',
-    failureRedirect: '/users/login',
-  },
-);
+// eslint-disable-next-line no-unused-vars
+export function logout(req, res, next) {
+  req.logout();
+  res.redirect('/');
+}

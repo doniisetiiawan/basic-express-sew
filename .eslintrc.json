@@ -17,6 +17,7 @@
     "no-console": "off",
     "consistent-return": "off",
     "no-param-reassign": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "eqeqeq": "off"
   }
 }

@@ -3,10 +3,13 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import MongoStorecqbas from 'connect-mongo';
 
-import configaro from './config';
 import passport from './passport';
+import configaro from './config';
 import routes from './routes';
+
+const MongoStore = MongoStorecqbas(session);
 
 const config = configaro();
 
@@ -25,7 +28,9 @@ app.use(
     secret: 'Progressively',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true },
+    store: new MongoStore({
+      url: config.db_url,
+    }),
   }),
 );
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,7 +39,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send(req.user));
 routes(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
